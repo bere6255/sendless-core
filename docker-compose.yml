@@ -1,0 +1,30 @@
+services:
+  app:
+    build: .
+    network_mode: host  # Enables access to host's MySQL/Redis
+    environment:
+      NODE_ENV: development
+      PORT: 8081
+      DB_HOST: 127.0.0.1       # Host MySQL
+      DB_USER: tencoin
+      DB_DATABASE: tencoin
+      DB_PASSWORD: hrtydfefwsvrmtvsWLGD2koUzipvSgwrvs
+      REDIS_HOST: 127.0.0.1    # Host Redis
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: hrtywsvrmtvszipvSgwrvs
+      ENCRYPTION_KEY: csvbgheefrhrtydfefwsvrmtvsWLGD2koUzipvSgwrvsbf
+      PAYMENT_PROCESSOR: flutterwave
+      TENCOIN_USER_ID: 6
+      TENCOIN_COLLECTIONS: 6
+      BILLS_COLLECTION_ACCOUNT: 6
+      TRANSACTION_TABLE: transactions
+      TERMII_API_TOKEN: TLuW8FaUsHOOBfBXk9vfoRFl8NBWGtTguwbBzbXumGBoUDH9ygmX4bbRTvJ8SV
+      TERMII_BASE_URL: https://v3.api.termii.com
+      BLUSALT_BASEURL: https://api.blusalt.net
+      BLUSALT_API_KEY: NMOPDMPHN74VFV9LYORMK3OCCWNST852
+      BLUSALT_CLEINT_ID: L9J5QOOYRY7S
+      BLUSALT_APP_NAME: spr
+      SALT_ROUNDS: 10
+    volumes:
+      - ./public:/usr/src/app/public
+    restart: unless-stopped # Good practice for production
