@@ -7,12 +7,12 @@ export default async (input: any) => {
 			"string.empty": "Full name cannot be empty",
 			"any.required": "Full name is required",
 		}),
-		emaill: joi.string().trim().required().messages({
+		email: joi.string().trim().required().messages({
 			"string.base": "Email should be a type of 'text'",
 			"string.empty": "Email cannot be empty",
 			"any.required": "Email is required",
 		}),
-		phone: joi.string().valid('email', 'phone').required().messages({
+		phone: joi.string().trim().required().messages({
 			"string.base": "Type should be a type of 'text'",
 			"string.empty": "Type cannot be empty",
 			"any.required": "Type is required",

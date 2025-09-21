@@ -20,15 +20,13 @@ type LoginPayload = {
 export default async ({
   emailPhone,
   password,
-  type,
   userAgent,
   logPrefix = logPrefixDefault,
 }: LoginPayload) => {
-  const queryField = type === "phone" ? "phone" : "email";
   const user = await User.query()
-    .findOne({ [queryField]: emailPhone })
-    .whereNull("deleted_at")
-    .withGraphFetched("wallet");
+    .findOne({ email: emailPhone })
+    .orWhere({ phone: emailPhone })
+    .whereNull("deleted_at");
 
   if (!user) {
     throw new AppError("Wrong email and password combination", 400, logPrefix, {});
@@ -67,11 +65,11 @@ export default async ({
   const token = generateJWT(user.id);
   const userProfile = await getUser({ userId: user.id });
 
-  await emailMessage({
-    email: user.email,
-    type: "login",
-    meta: { name: user.fullName, userAgent },
-  });
+  // await emailMessage({
+  //   email: user.email,
+  //   type: "login",
+  //   meta: { name: user.fullName, userAgent },
+  // });
 
   return {
     status: "success",

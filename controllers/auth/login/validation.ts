@@ -3,9 +3,9 @@ import joi from "joi"
 export default async (input: any) => {
 	const loginSchema = joi.object({
 		emailPhone: joi.string().trim().required().messages({
-			"string.base": "email/phone  should be a type of 'text'",
-			"string.empty": "email/phone  cannot be empty",
-			"any.required": "email/phone  is required",
+			"string.base": "Email or phone  should be a type of 'text'",
+			"string.empty": "Email or phone  cannot be empty",
+			"any.required": "Email or phone  is required",
 		}),
 		type: joi.string().valid('email', 'phone').required().messages({
 			"string.base": "Type should be a type of 'text'",

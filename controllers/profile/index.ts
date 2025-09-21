@@ -6,8 +6,10 @@ import addPhone from "./addPhone"
 import address from "./address"
 import update from "./update"
 import verify from "./verify"
+import sumsub from "./sumsub"
 export default {
     verify: async (req: Request, res: Response, next: NextFunction) => await verify(req, res, next),
+    sumsub: async (req: Request, res: Response, next: NextFunction) => await sumsub(req, res, next),
     update: async (req: Request, res: Response, next: NextFunction) => await update(req, res, next),
     address: async (req: Request, res: Response, next: NextFunction) => await address(req, res, next),
     addPhone: async (req: Request, res: Response, next: NextFunction) => await addPhone(req, res, next),

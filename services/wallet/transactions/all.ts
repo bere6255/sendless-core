@@ -13,8 +13,8 @@ export default async ({ user, type, page, limit = 10 }: { user: any; type: strin
         const sortedTransaction = <any>[];
         const peerUserIds = <any>[];
         let userTransactions = <any>[];
-        if (type === "main") {
-            userTransactions = await Transactions.query().where({ user_id, status: "successful" }).whereNotIn("type", ['loans', 'saving', 'airtime', 'mobileData', 'electricity', 'bills']).page(page, limit);
+        if (!type) {
+            userTransactions = await Transactions.query().where({ user_id, status: "successful" }).page(page, limit);
         } else {
             userTransactions = await Transactions.query().where({ user_id, status: "successful", type }).page(page, limit);
         }
@@ -24,7 +24,7 @@ export default async ({ user, type, page, limit = 10 }: { user: any; type: strin
             }
         }
 
-        const loadedPeeUsers = await User.query().select("id", "firstName", "lastName", "avatar").whereIn("id", peerUserIds);
+        const loadedPeeUsers = await User.query().select("id", "full_name", "avatar").whereIn("id", peerUserIds);
 
         if (loadedPeeUsers.length > 0) {
             for (let transindex = 0; transindex < userTransactions.results.length; transindex++) {

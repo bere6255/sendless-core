@@ -66,12 +66,13 @@ class User extends Model {
 		}
 		return {
 			id: this.id,
-			fullName: this.fullName,
+			fullName: this.full_name,
 			phone: this.phone,
 			email: this.email,
 			tag: this.tag,
 			avatar,
 			notification: this.notification !== 0,
+			status: this.status,
 			country: this.country,
 			phone_verified_at: this.phone_verified_at ? true : false,
 			email_verified_at: this.email_verified_at ? true : false,

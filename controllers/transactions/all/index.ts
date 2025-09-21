@@ -7,7 +7,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
 
 		let page = <any>'0';
 		let limit = <any>'20';
-		let type = <any>"main";
+		let type = <any>null;
 		
 		if (req.query.page) {
 			page = req.query.page;

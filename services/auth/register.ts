@@ -44,13 +44,7 @@ export default async ({ fullName, refCode, email, phone, password }: register) =
         passwordHash = await bcrypt.hash(password, parseInt(saltRounds));
     }
     let newUser: any = null;
-    let defaultWallet;
 
-
-
-    if (!defaultWallet) {
-        throw new AppError("Country not found, please try again", 400, logPrefix, {});
-    }
 
     try {
         await transaction(
