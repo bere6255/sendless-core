@@ -1,55 +1,47 @@
-import dotenv from 'dotenv';
+import axios, { AxiosInstance, InternalAxiosRequestConfig } from 'axios';
 import crypto from 'crypto';
-import axios, { AxiosRequestConfig } from 'axios';
-dotenv.config();
 
-const SUMSUB_BASE_URL = process.env.SUMSUB_BASE_URL || 'https://api.sumsub.com';
-const SUMSUB_APP_TOKEN = process.env.SUMSUB_APP_TOKEN || '';
-const SUMSUB_SECRET_KEY = process.env.SUMSUB_SECRET_KEY || '';
+const SUMSUB_APP_TOKEN = process.env.SUMSUB_APP_TOKEN!;
+const SUMSUB_SECRET_KEY = process.env.SUMSUB_SECRET_KEY!;
+const SUMSUB_BASE_URL = 'https://api.sumsub.com';
 
-export const sumsubClient = {
-  sign(ts: number | string, method: string, urlPath: string, bodyString: string) {
-    return crypto
-      .createHmac('sha256', SUMSUB_SECRET_KEY)
-      .update(String(ts) + method + urlPath + bodyString)
-      .digest('hex');
-  },
+const sumsubClient: AxiosInstance = axios.create({
+  baseURL: SUMSUB_BASE_URL,
+});
 
-
-  async get(path: string, config: AxiosRequestConfig = {}) {
-    const method = 'GET';
+sumsubClient.interceptors.request.use(
+  async (config: InternalAxiosRequestConfig): Promise<InternalAxiosRequestConfig> => {
     const ts = Math.floor(Date.now() / 1000);
-    const signature = this.sign(ts, method, path, '');
+    const method = config.method?.toUpperCase() || 'GET';
 
+    // ✅ Ensure we always sign only the path + query
+    const urlObj = new URL(config.baseURL! + (config.url || ''));
+    const pathWithQuery = urlObj.pathname + urlObj.search;
 
-    return axios.get(`${SUMSUB_BASE_URL}${path}`, {
-      ...config,
-      headers: {
-        'X-App-Token': SUMSUB_APP_TOKEN,
-        'X-App-Access-Sig': signature,
-        'X-App-Access-Ts': String(ts),
-        ...config.headers,
-      },
-    });
+    // ✅ Body string (must be exactly as sent)
+    let bodyString = '';
+    if (config.data && method !== 'GET') {
+      // If explicitly null/undefined, leave empty string
+      if (typeof config.data === 'string') {
+        bodyString = config.data;
+      } else if (Buffer.isBuffer(config.data)) {
+        bodyString = config.data.toString();
+      } else if (Object.keys(config.data).length > 0) {
+        bodyString = JSON.stringify(config.data);
+      }
+    }
+
+    // ✅ Compute HMAC
+    const hmac = crypto.createHmac('sha256', SUMSUB_SECRET_KEY);
+    hmac.update(String(ts) + method + pathWithQuery + bodyString);
+
+    config.headers['X-App-Token'] = SUMSUB_APP_TOKEN;
+    config.headers['X-App-Access-Ts'] = ts;
+    config.headers['X-App-Access-Sig'] = hmac.digest('hex');
+
+    return config;
   },
+  (error) => Promise.reject(error)
+);
 
-
-  async post(path: string, body: any = {}, config: AxiosRequestConfig = {}) {
-    const method = 'POST';
-    const ts = Math.floor(Date.now() / 1000);
-    const bodyString = JSON.stringify(body) || '';
-    const signature = this.sign(ts, method, path, bodyString);
-
-
-    return axios.post(`${SUMSUB_BASE_URL}${path}`, body, {
-      ...config,
-      headers: {
-        'X-App-Token': SUMSUB_APP_TOKEN,
-        'X-App-Access-Sig': signature,
-        'X-App-Access-Ts': String(ts),
-        'Content-Type': 'application/json',
-        ...config.headers,
-      },
-    });
-  },
-};
+export default sumsubClient;

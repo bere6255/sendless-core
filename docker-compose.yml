@@ -1,30 +1,51 @@
+version: "3.8"
+
 services:
-  app:
+  api:
     build: .
-    network_mode: host  # Enables access to host's MySQL/Redis
+    container_name: sendless_api
+    restart: always
     environment:
-      NODE_ENV: development
-      PORT: 8081
-      DB_HOST: 127.0.0.1       # Host MySQL
-      DB_USER: tencoin
-      DB_DATABASE: tencoin
-      DB_PASSWORD: hrtydfefwsvrmtvsWLGD2koUzipvSgwrvs
-      REDIS_HOST: 127.0.0.1    # Host Redis
+      NODE_ENV: production
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USER: root
+      DB_PASSWORD: rootpassword
+      DB_NAME: sendless
+      REDIS_HOST: redis
       REDIS_PORT: 6379
-      REDIS_PASSWORD: hrtywsvrmtvszipvSgwrvs
-      ENCRYPTION_KEY: csvbgheefrhrtydfefwsvrmtvsWLGD2koUzipvSgwrvsbf
-      PAYMENT_PROCESSOR: flutterwave
-      TENCOIN_USER_ID: 6
-      TENCOIN_COLLECTIONS: 6
-      BILLS_COLLECTION_ACCOUNT: 6
-      TRANSACTION_TABLE: transactions
-      TERMII_API_TOKEN: TLuW8FaUsHOOBfBXk9vfoRFl8NBWGtTguwbBzbXumGBoUDH9ygmX4bbRTvJ8SV
-      TERMII_BASE_URL: https://v3.api.termii.com
-      BLUSALT_BASEURL: https://api.blusalt.net
-      BLUSALT_API_KEY: NMOPDMPHN74VFV9LYORMK3OCCWNST852
-      BLUSALT_CLEINT_ID: L9J5QOOYRY7S
-      BLUSALT_APP_NAME: spr
-      SALT_ROUNDS: 10
+      ENCRYPTION_KEY: "E0Ax34WuY0sAEIBKb4I734TIl77eu3RY"
+      SALT_ROUNDS: "10"
+      SUMSUB_APP_TOKEN: "prd:26pi6xT8gxwy21W6ByxaTqjG.E0lXx8qYfEcAPond0f57oFUkD92Fal2E"
+      SUMSUB_SECRET_KEY: "BoJ23GY1Rm8ugVoDDqH7S1UdG3g0m73m"
+      SUMSUB_BASE_URL: "https://api.sumsub.com"
+    ports:
+      - "4000:4000"
+    depends_on:
+      - mysql
+      - redis
+
+  mysql:
+    image: mysql:8.0
+    container_name: sendless_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: sendless
+    ports:
+      - "3306:3306"
     volumes:
-      - ./public:/usr/src/app/public
-    restart: unless-stopped # Good practice for production
+      - mysql_data:/var/lib/mysql
+
+  redis:
+    image: redis:alpine
+    container_name: sendless_redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+volumes:
+  mysql_data:
+  redis_data:
