@@ -2,8 +2,8 @@ import * as dotenv from "dotenv";
 dotenv.config()
 // Update with your config settings.
 const DB_PASSWORD = process.env.DB_PASSWORD;
-const DB_USERNAME = process.env.DB_USERNAME;
-const DB_DATABASE = process.env.DB_DATABASE;
+const DB_USERNAME = process.env.DB_USER;
+const DB_DATABASE = process.env.DB_NAME;
 const DB_HOST = process.env.DB_HOST;
 // const socketPath = process.env.DB_SOCKET;
 export default {
