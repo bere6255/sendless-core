@@ -8,12 +8,12 @@ services:
     environment:
       NODE_ENV: production
       PORT: 4000
-      DB_HOST: mysql
+      DB_HOST: 64.23.251.210
       DB_PORT: 3306
       DB_USER: root
       DB_PASSWORD: E0Ax34WuY0sAEIBKb4I734TIl77eu3RY
       DB_NAME: sendless
-      REDIS_HOST: redis
+      REDIS_HOST: 64.23.251.210
       REDIS_PORT: 6379
       ENCRYPTION_KEY: "E0Ax34WuY0sAEIBKb4I734TIl77eu3RY"
       SALT_ROUNDS: "10"
