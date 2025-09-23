@@ -2,7 +2,7 @@ import * as dotenv from "dotenv";
 dotenv.config()
 // import routes from './routes/'
 import app from "./app"
-const port = process.env.PORT ? parseInt(process.env.PORT) : 8080;
+const port = process.env.PORT ? parseInt(process.env.PORT) : 4000;
 
 
 
