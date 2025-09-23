@@ -4,7 +4,7 @@ FROM node:18-alpine AS builder
 WORKDIR /app
 
 # Copy package files first (better layer caching)
-COPY package.json yarn.lock ./
+COPY package.json ./
 
 # Install dependencies
 RUN yarn install --frozen-lockfile
@@ -21,7 +21,7 @@ FROM node:18-alpine
 WORKDIR /app
 
 # Copy only necessary files
-COPY package.json yarn.lock ./
+COPY package.json ./
 
 # Install only production dependencies
 RUN yarn install --production --frozen-lockfile
