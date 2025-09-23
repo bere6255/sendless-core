@@ -29,7 +29,7 @@ export default {
 		client: "mysql2",
 		connection: {
 			host: DB_HOST,
-			port: 17093,
+			port: 3306,
 			database: DB_DATABASE,
 			user: DB_USERNAME,
 			password: DB_PASSWORD,
