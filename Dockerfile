@@ -4,16 +4,16 @@ FROM node:20-alpine AS builder
 WORKDIR /app
 
 # Copy package files first (better layer caching)
-COPY package.json ./
+COPY package*.json ./
 
 # Install dependencies
-RUN yarn install --frozen-lockfile
+RUN npm install
 
 # Copy source code
 COPY . .
 
 # Build TypeScript
-RUN yarn build
+RUN npm run build
 
 # Step 2: Production stage
 FROM node:20-alpine
@@ -24,7 +24,7 @@ WORKDIR /app
 COPY package.json ./
 
 # Install only production dependencies
-RUN yarn install --production --frozen-lockfile
+RUN npm install --only=production
 
 # Copy built app from builder stage
 COPY --from=builder /app/dist ./dist
