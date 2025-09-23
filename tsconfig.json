@@ -10,6 +10,9 @@
     "typeRoots": [
       "node_modules/@types"
     ]
-  }
+  },
+  "files": [
+    "express.d.ts"
+  ]
   
 }

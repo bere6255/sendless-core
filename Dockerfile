@@ -1,33 +1,36 @@
-# Use Node 20 Alpine for smaller image
-FROM node:20-alpine AS builder
+# Step 1: Build stage
+FROM node:18-alpine AS builder
 
 WORKDIR /app
 
-# Copy package.json first to leverage Docker cache
-COPY package*.json ./
+# Copy package files first (better layer caching)
+COPY package.json yarn.lock ./
 
 # Install dependencies
-RUN npm install --frozen-lockfile
+RUN yarn install --frozen-lockfile
 
-# Copy all source files
+# Copy source code
 COPY . .
 
 # Build TypeScript
-RUN npm run build
+RUN yarn build
 
-# --- Production stage ---
-FROM node:20-alpine
+# Step 2: Production stage
+FROM node:18-alpine
 
 WORKDIR /app
 
-# Copy dependencies and build output
-COPY --from=builder /app/node_modules ./node_modules
+# Copy only necessary files
+COPY package.json yarn.lock ./
+
+# Install only production dependencies
+RUN yarn install --production --frozen-lockfile
+
+# Copy built app from builder stage
 COPY --from=builder /app/dist ./dist
 
-# Set environment variables (optional)
-ENV NODE_ENV=production
-
+# Expose API port
 EXPOSE 4000
 
-# Start API
-CMD ["npm", "start"]
+# Start the API
+CMD ["node", "dist/index.js"]

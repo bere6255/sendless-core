@@ -10,7 +10,7 @@ services:
       DB_HOST: mysql
       DB_PORT: 3306
       DB_USER: root
-      DB_PASSWORD: rootpassword
+      DB_PASSWORD: E0Ax34WuY0sAEIBKb4I734TIl77eu3RY
       DB_NAME: sendless
       REDIS_HOST: redis
       REDIS_PORT: 6379
@@ -30,7 +30,7 @@ services:
     container_name: sendless_mysql
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_ROOT_PASSWORD: E0Ax34WuY0sAEIBKb4I734TIl77eu3RY
       MYSQL_DATABASE: sendless
     ports:
       - "3306:3306"
