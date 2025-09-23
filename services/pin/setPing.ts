@@ -1,6 +1,7 @@
 import Pin from '../../models/Pin';
 import bcrypt from "bcryptjs"
 import AppError from '../../utils/AppError';
+import redisConnection from '../../redis/redisConnection';
 
 const logPrefix = "[PIN:SETPIN:SERVICE]";
 const saltRounds = process.env.SALT_ROUNDS || '10';
@@ -31,6 +32,8 @@ export default async ({ pin, user }: setPing) => {
         reset_attempts: 0,
         created_at: new Date()
     });
+
+    await redisConnection({ type: "delete", key: `users:${user.id}`, value: null, time: null });
 
     return { status: "success", statusCode: 200, data: {}, message: "Pin set successful" }
 

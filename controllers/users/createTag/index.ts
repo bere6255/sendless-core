@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express"
 import validation from './validation';
 import User from "../../../models/User";
 import AppError from "../../../utils/AppError";
+import redisConnection from "../../../redis/redisConnection";
 const logPrefix = "[USER:CREATETAG:CONTROLLER]"
 export default async (req: Request, res: Response, next: NextFunction) => {
 	try {
@@ -23,7 +24,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
 			tag,
 			updated_at: new Date
 		});
-
+		await redisConnection({ type: "delete", key: `users:${user.id}`, value: null, time: null });
 		return res.status(200).send({
 			status: "success",
 			data: {},

@@ -19,7 +19,7 @@ export async function up(knex: Knex): Promise<void> {
 		table.datetime("email_verified_at", { useTz: true, precision: 6 });
 		table.datetime("phone_verified_at", { useTz: true, precision: 6 });
 		table.string("password").notNullable();
-		table.string("country").notNullable().defaultTo("NG");
+		table.string("country").notNullable().defaultTo("NGN");
 		table.integer("login_attempts").notNullable().defaultTo(0);
 		table.integer("reset_password_attempts").notNullable().defaultTo(0);
 		table.string("remember_token");

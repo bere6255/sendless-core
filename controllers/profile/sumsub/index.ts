@@ -22,6 +22,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
         info: {
           firstName: user?.firstName,
           lastName: user?.lastName,
+          country: user?.country
         }
       });
       log(`${logPrefix} ✅ Applicant created: ${JSON.stringify(applicant)}`);
@@ -42,7 +43,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
 
     // ✅ Always use externalUserId when generating token
     const resp = await sumsubClient.post(
-      `/resources/accessTokens?userId=${externalUserId}&levelName=kyc-level`,
+      `/resources/accessTokens?userId=${externalUserId}&levelName=Sendless`,
       null
     );
 

@@ -4,6 +4,7 @@ import { transaction } from "objection"
 import Wallet from "../../models/Wallet"
 import Refferal from "../../models/Refferal"
 import generateJWT from "../../helpers/generateJWT"
+import { formartPhone } from "../../helpers/util";
 // import emailMessage from "../../helpers/messages/emailMessage";
 import getUser from "../profile/getUser"
 import AppError from "../../utils/AppError"
@@ -11,6 +12,7 @@ type register = {
     fullName: string
     email: string
     phone: string
+    country: string
     password: string
     refCode: any
 }
@@ -19,6 +21,7 @@ type userData = {
     email?: string;
     full_name: string;
     password: string;
+    country: string;
     email_verified_at?: Date | null;
     phone_verified_at?: Date | null;
     notification: number;
@@ -28,12 +31,21 @@ type userData = {
 const saltRounds = process.env.SALT_ROUNDS || "10";
 const logPrefix = "[AUTH:REGISTER:SERVICE]";
 
-export default async ({ fullName, refCode, email, phone, password }: register) => {
+export default async ({ fullName, refCode, email, phone, password, country }: register) => {
 
     console.log(`${logPrefix} init ===> `, JSON.stringify({ email, phone, fullName }));
+    // formart phone if type is phone 
+    let identity = phone;
+
+    const formartedRes = formartPhone({ phone, country });
+    if (formartedRes.status) {
+        identity = formartedRes.phone;
+    } else {
+        throw new AppError(`No dial code found for country: ${country}`, 400, logPrefix, {});
+    }
 
     const userPhone = await User.query()
-        .findOne({ phone }).orWhere({ email });
+        .findOne({ phone: identity }).orWhere({ email });
 
     if (userPhone) {
         throw new AppError("You already have an account with this email, please login", 400, logPrefix, {});
@@ -56,6 +68,7 @@ export default async ({ fullName, refCode, email, phone, password }: register) =
                     email,
                     full_name: fullName,
                     password: passwordHash,
+                    country,
                     email_verified_at: new Date(),
                     phone_verified_at: new Date(),
                     notification: 1,

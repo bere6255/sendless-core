@@ -24,9 +24,9 @@ export default async (req: Request, res: Response, next: NextFunction) => {
     const webhookEvent = req.body;
 
     if (webhookEvent.type === "applicantWorkflowCompleted") {
-      const applicantId = webhookEvent.data.applicantId;
-      const externalUserId = webhookEvent.data.externalUserId;
-      const reviewStatus = webhookEvent.data.reviewStatus; // GREEN, RED, PENDING
+      const applicantId = webhookEvent.applicantId;
+      const externalUserId = webhookEvent.externalUserId;
+      const reviewStatus = webhookEvent.reviewStatus; // GREEN, RED, PENDING
 
       console.log("KYC completed for applicant:", applicantId, "status:", reviewStatus);
 
