@@ -1,0 +1,1 @@
+{"version":3,"file":"VirtualAccounts.js","sourceRoot":"","sources":["../../models/VirtualAccounts.ts"],"names":[],"mappings":";;AAAA,yCAAiC;AAEjC,MAAM,eAAgB,SAAQ,iBAAK;IAGlC,MAAM,KAAK,SAAS;QACnB,OAAO,kBAAkB,CAAC;IAC3B,CAAC;IAED,MAAM,KAAK,QAAQ;QAClB,OAAO,IAAI,CAAC;IACb,CAAC;IAED,MAAM,KAAK,gBAAgB;QAE1B,OAAO,EAEN,CAAC;IACH,CAAC;CACD;AAED,kBAAe,eAAe,CAAC"}

@@ -1,0 +1,1 @@
+{"version":3,"file":"BlackList.js","sourceRoot":"","sources":["../../models/BlackList.ts"],"names":[],"mappings":";;AAAA,yCAAiC;AAEjC,MAAM,SAAU,SAAQ,iBAAK;IAC5B,4CAA4C;IAC5C,MAAM,KAAK,SAAS;QACnB,OAAO,YAAY,CAAC;IACrB,CAAC;IAED,MAAM,KAAK,QAAQ;QAClB,OAAO,IAAI,CAAC;IACb,CAAC;CACD;AAED,kBAAe,SAAS,CAAC"}
